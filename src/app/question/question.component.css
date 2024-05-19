@@ -75,6 +75,7 @@
 
 /* Question */
 .question {
+  position: relative;
   border: 1px solid #ccc;
   padding: 20px;
   margin-bottom: 20px;
@@ -254,4 +255,13 @@
 .search-bar input[type="text"]:focus {
   border-color: #007bff; /* Change border color on focus */
   outline: none;
+}
+
+.category {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: white;
 }

@@ -56,7 +56,7 @@ export class QuestionService {
     });
 
     /* Make the post request with the token included in the headers */
-    return this.http.put<any>(`${this.baseUrl}/question`, newQuestion, { headers });
+    return this.http.put<any>(`${this.baseUrl}/question/`, newQuestion, { headers });
   }
 
   getAnswersForQuestion(questionId: number): Observable<any> {

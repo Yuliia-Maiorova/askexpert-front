@@ -38,7 +38,6 @@ export class QuestionComponent implements OnInit {
     if (token) {
       const decodedToken: any = jwtDecode(token);
       this.isExpert = decodedToken.is_expert;
-      console.log("START" + this.isExpert)
     }
   }
 
@@ -212,6 +211,26 @@ export class QuestionComponent implements OnInit {
       }
     );
   }
+
+  getCategoryName(categoryId: number): string {
+    const category = this.categories.find(cat => cat.id === categoryId);
+    return category ? category.name : '';
+  }
+  
+  getCategoryColor(categoryId: number): string {
+    const category = this.categories.find(cat => cat.id === categoryId);
+    return category ? category.hex_code : 'black'; // Default color if category not found
+  }
+
+  filterByCategory() {
+    if (!this.selectedCategory || this.selectedCategory === '') {
+      // If no category selected, show all questions
+      this.filteredQuestions = this.questions;
+    } else {
+      // Filter questions based on selected category
+      this.filteredQuestions = this.questions.filter(question => parseInt(question.category_id) === parseInt(this.selectedCategory));
+    }
+  }  
 
   showRateButton(answer: any): boolean {
     return answer.rating;
