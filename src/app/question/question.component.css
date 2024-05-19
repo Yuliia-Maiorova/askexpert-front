@@ -1,6 +1,6 @@
 /* Container */
 .container {
-  max-width: 60%;
+  max-width: 800px;
   margin: 0 auto;
 }
 
@@ -31,20 +31,35 @@
 .ask-question textarea,
 .ask-question select {
   margin-bottom: 10px;
-  padding: 8px;
+  padding: 12px;
   font-size: 16px;
-  resize: vertical;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
+
+.ask-question input:focus,
+.ask-question textarea:focus,
+.ask-question select:focus {
+  outline: none;
+  border-color: #007bff; /* Highlight border on focus */
 }
 
 /* Ask question button */
 .ask-question button {
-  padding: 10px;
   width: 100%;
-  background-color: #007bff;
+  padding: 12px;
+  background-color: #0056b3;
   color: #fff;
   border: none;
-  cursor: pointer;
+  border-radius: 5px;
   font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.ask-question button:hover {
+  background-color: #004080; /* Darker shade of blue on hover */
 }
 
 /* Questions */
@@ -98,30 +113,42 @@
   margin-right: 10px;
 }
 
-.dropdown {
-    position: relative;
-  }
-  
-  .selected-option {
-    cursor: pointer;
-  }
-  
-  .options {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-top: none;
-  }
-  
-  .option {
-    padding: 8px;
-    cursor: pointer;
-  }
-  
-  .option:hover {
-    background-color: #f0f0f0;
-  }
-  
+/* Answer form */
+.answer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Answer textarea */
+.answer-form textarea {
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: vertical;
+  transition: border-color 0.3s ease;
+}
+
+.answer-form textarea:focus {
+  outline: none;
+  border-color: #007bff; /* Highlight border on focus */
+}
+
+/* Answer button */
+.answer-form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.answer-form button:hover {
+  background-color: #45a049; /* Darker shade of green on hover */
+}

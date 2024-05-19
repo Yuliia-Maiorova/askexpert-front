@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -36,5 +37,30 @@ export class AuthService {
   isLoggedIn(): boolean {
     // Check if the token exists in local storage
     return this.getToken() !== null;
+  }
+
+  getUserIdFromToken(): number | null {
+    const token = this.getToken();
+    if (token) {
+      const decoded: any = jwtDecode(token);
+      return decoded.id;
+    }
+    return null;
+  }
+
+  isUserExpert(): boolean {
+    /* Get the token from local storage */
+    const token = this.getToken();
+
+    /* If token doesn't exist or is invalid, return false */
+    if (!token) {
+      return false;
+    }
+
+    /* Decode the token to access its payload */
+    const decodedToken: any = jwtDecode(token);
+
+    /* Check if the decoded token contains the is_expert property */
+    return decodedToken && decodedToken.is_expert;
   }
 }
