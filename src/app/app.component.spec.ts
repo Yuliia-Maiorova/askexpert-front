@@ -1,9 +1,19 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { AuthService } from './services/auth.service';
+import { Router } from '@angular/router';
+import { of } from 'rxjs';
 
 describe('AppComponent', () => {
+  let authServiceStub: Partial<AuthService>;
+
   beforeEach(async () => {
+    authServiceStub = {
+      logout: () => {},
+      isLoggedIn: () => true
+    };
+
     await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule
@@ -11,6 +21,9 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent
       ],
+      providers: [
+        { provide: AuthService, useValue: authServiceStub }
+      ]
     }).compileComponents();
   });
 
@@ -30,6 +43,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, askexpert');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Q&A Platform');
   });
 });

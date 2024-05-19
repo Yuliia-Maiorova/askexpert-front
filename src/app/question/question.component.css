@@ -1,0 +1,127 @@
+/* Container */
+.container {
+  max-width: 60%;
+  margin: 0 auto;
+}
+
+/* Header */
+.main {
+  margin-top: 20px;
+}
+
+/* Ask question form */
+.ask-question {
+  margin-bottom: 20px;
+}
+
+/* Ask question text */
+.ask-question h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+/* Ask question form */
+.ask-question form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ask question input fields */
+.ask-question input,
+.ask-question textarea,
+.ask-question select {
+  margin-bottom: 10px;
+  padding: 8px;
+  font-size: 16px;
+  resize: vertical;
+}
+
+/* Ask question button */
+.ask-question button {
+  padding: 10px;
+  width: 100%;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Questions */
+.questions {
+  margin-top: 30px;
+}
+
+/* Questions title */
+.questions h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Question */
+.question {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/* Question title */
+.question h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+/* Question paragraph */
+.question p {
+  margin-bottom: 15px;
+}
+
+/* Answers */
+.answers {
+  margin-top: 15px;
+}
+
+/* Answers title */
+.answers .answer {
+  border: 1px solid #e0e0e0;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+/* Answers paragraph */
+.answers .answer p {
+  margin-bottom: 5px;
+}
+
+/* Answers button */
+.answers .answer button {
+  margin-right: 10px;
+}
+
+.dropdown {
+    position: relative;
+  }
+  
+  .selected-option {
+    cursor: pointer;
+  }
+  
+  .options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-top: none;
+  }
+  
+  .option {
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .option:hover {
+    background-color: #f0f0f0;
+  }
+  

@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="main">
+    <div class="ask-question">
+      <h2>Ask a Question</h2>
+      <form (submit)="postQuestion()">
+        <input type="text" [(ngModel)]="newQuestion.title" placeholder="Title" name="title" required />
+        <textarea [(ngModel)]="newQuestion.content" placeholder="Content" name="content" required></textarea>
+        <select [(ngModel)]="selectedCategoryId" name="category" required>
+          <option *ngFor="let category of categories" [ngValue]="{ id: category.id, name: category.name, hex_code: category.hex_code }" [style.background-color]="category.hex_code">{{ category.name }}</option>
+        </select>
+        <button type="submit">Post Question</button>
+      </form>
+    </div>
+
+    <div class="questions">
+      <h2>Questions</h2>
+      <div *ngFor="let question of questions" class="question">
+        <h3>{{ question.title }}</h3>
+        <p>{{ question.content }}</p>
+        <button (click)="toggleAnswers(question.id)">View Answers</button>
+        
+        <div *ngIf="question.showAnswers" class="answers">
+          <div *ngFor="let answer of question.answers" class="answer">
+            <p>{{ answer.content }}</p>
+            <button (click)="upvoteAnswer(answer.id)">Upvote</button> {{ answer.upvote_counter }}
+            <button (click)="approveAnswer(answer.id)">Approve</button> {{ answer.approve_counter }}
+          </div>
+          <form *ngIf="isExpert" (submit)="postAnswer(question.id)">
+            <textarea [(ngModel)]="newAnswer" placeholder="Your answer" name="answer" required></textarea>
+            <button type="submit">Post Answer</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Display category names and colors -->
+    <!-- <div class="categories">
+      <h2>Categories</h2>
+      <div *ngFor="let category of categories" class="category">
+        <span [style.color]="category.color">{{ category.name }}</span>
+      </div>
+    </div> -->
+  </div>
+</div>
