@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class AuthService {
   static getToken() {
     throw new Error('Method not implemented.');
   }
-  private baseUrl = 'http://localhost:3000/user';
+  private baseUrl = environment.env_url + '/user';
 
   constructor(private http: HttpClient) { }
 
