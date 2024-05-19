@@ -17,12 +17,16 @@ export class QuestionComponent implements OnInit {
     id: null as number | null
   };
   questions: any[] = [];
+  showUnanswered: boolean = false; // New property for checkbox
+  filteredQuestions: any[] = []; // New property for filtered questions
   selectedCategory: any;
   selectedCategoryId: number = 0;
   selectedCategoryHex: string = '';
   categories: any[] = [];
   isExpert: boolean = false; // Assuming isExpert should be a boolean property
-  newAnswer: string = ''; // Assuming newAnswer should be a string property
+  newAnswers: { [key: number]: string } = {}; // Object to store new answers for each question
+  isUpvoted: boolean = false; // Define isUpvoted variable
+  searchText: string = ''; // Search text
 
   constructor(private questionService: QuestionService, private categoryService: CategoryService, private authService: AuthService) { }
 
@@ -34,6 +38,18 @@ export class QuestionComponent implements OnInit {
     if (token) {
       const decodedToken: any = jwtDecode(token);
       this.isExpert = decodedToken.is_expert;
+      console.log("START" + this.isExpert)
+    }
+  }
+
+  toggleVote(answerId: number) {
+    this.isUpvoted = !this.isUpvoted; // Toggle the vote
+    if (this.isUpvoted) {
+      // Call the upvote function
+      this.upvoteAnswer(answerId);
+    } else {
+      // Call the downvote function
+      this.downvoteAnswer(answerId);
     }
   }
 
@@ -44,15 +60,51 @@ export class QuestionComponent implements OnInit {
     this.selectedCategoryHex = category.hex_code;
   }
 
+  filterQuestions() {
+    if (this.searchText.trim() === '') {
+      this.filteredQuestions = this.questions; // If search text is empty, show all questions
+    } else {
+      // Filter questions based on search text
+      this.filteredQuestions = this.questions.filter(question => 
+        question.title.toLowerCase().includes(this.searchText.trim().toLowerCase())
+      );
+    }
+  }
+
   getQuestions() {
     this.questionService.getQuestions().subscribe(
       (response) => {
         this.questions = response;
+        // Call filter method after getting questions
+        this.filterQuestions();
       },
       (error) => {
         console.error('Error fetching questions:', error);
       }
     );
+  }
+
+  toggleFilteredQuestions() {
+    if (this.showUnanswered && this.isExpert) {
+      this.getUnansweredQuestions();
+    } else {
+      this.getQuestions();
+    }
+  }
+
+  async getUnansweredQuestions() {
+    try {
+      this.questionService.getFilteredQuestions(this.isExpert).subscribe(
+        (unansweredQuestions) => {
+          this.filteredQuestions = unansweredQuestions; // Update filteredQuestions with unanswered questions
+        },
+        (error) => {
+          console.error('Error fetching unanswered questions:', error);
+        }
+      );
+    } catch (error) {
+      console.error('Error fetching unanswered questions:', error);
+    }
   }
 
   getCategories() {
@@ -154,7 +206,6 @@ export class QuestionComponent implements OnInit {
     this.questionService.rateAnswer(answerId, rating).subscribe(
       (response) => {
         console.log('Rating operation successful:', response);
-        // Update the UI here if needed
       },
       (error) => {
         console.error('Error during rating operation:', error);
@@ -162,12 +213,35 @@ export class QuestionComponent implements OnInit {
     );
   }
 
+  showRateButton(answer: any): boolean {
+    return answer.rating;
+  }
+
+  toggleApproval(answer: any) {
+    const originalState = answer.approve_counter;
+
+    // Optimistically update UI
+    answer.approve_counter = !answer.approve_counter;
+
+    // Determine the appropriate action and endpoint
+    const action = answer.approve_counter ? this.questionService.approveAnswer(answer.id) : this.questionService.unapproveAnswer(answer.id);
+
+    action.subscribe(
+      (response) => {
+        console.log('Answer approval state changed successfully:', response);
+      },
+      (error) => {
+        console.error('Error changing answer approval state:', error);
+        // Revert UI if backend call fails
+        answer.approve_counter = originalState;
+      }
+    );
+  }
+
   approveAnswer(answerId: number) {
-    console.log(answerId)
     this.questionService.approveAnswer(answerId).subscribe(
       (response) => {
         console.log('Answer approved successfully:', response);
-        // Update the UI here if needed
       },
       (error) => {
         console.error('Error approving answer:', error);
@@ -179,7 +253,6 @@ export class QuestionComponent implements OnInit {
     this.questionService.unapproveAnswer(answerId).subscribe(
       (response) => {
         console.log('Answer unapproved successfully:', response);
-        // Update the UI here if needed
       },
       (error) => {
         console.error('Error unapproving answer:', error);
@@ -188,15 +261,10 @@ export class QuestionComponent implements OnInit {
   }
 
   postAnswer(postId: number) {
-    if (!this.newAnswer.trim()) {
-      console.error('Please enter a valid answer');
-      return;
-    }
-
     // Create answer data object
     const answerData = {
       id: this.authService.getUserIdFromToken(),
-      content: this.newAnswer,
+      content: this.newAnswers[postId],
       is_expert: this.isExpert,
     };
 
@@ -204,7 +272,7 @@ export class QuestionComponent implements OnInit {
       (response) => {
         console.log('Answer posted successfully:', response);
         // Clear the newAnswer field after successful submission
-        this.newAnswer = '';
+        this.newAnswers[postId] = '';
         // Refresh the questions list or update the specific question's answers if needed
         this.getQuestions();
       },
