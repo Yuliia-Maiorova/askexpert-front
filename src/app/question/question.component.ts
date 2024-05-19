@@ -83,7 +83,7 @@ export class QuestionComponent implements OnInit {
     // Get all questions
     this.questionService.getQuestions().subscribe(
       (response) => {
-        this.questions = response;
+        this.questions = response.posts;
         // Call filter method after getting questions
         this.filterQuestions();
       },
