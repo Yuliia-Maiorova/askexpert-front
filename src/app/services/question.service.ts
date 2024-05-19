@@ -225,7 +225,7 @@ export class QuestionService {
     const requestBody = { is_expert: isExpert };
 
     // Call the API route to get filtered questions based on the expert status
-    return this.http.post<any[]>(`${this.baseUrl}/question/unanswered`, requestBody, { headers });
+    return this.http.get<any[]>(`${this.baseUrl}/question/unanswered`, { headers });
   }
 }
 
