@@ -8,6 +8,7 @@ import { of } from 'rxjs';
 describe('AppComponent', () => {
   let authServiceStub: Partial<AuthService>;
 
+  // Set up the test environment before each test case
   beforeEach(async () => {
     authServiceStub = {
       logout: () => {},
@@ -27,18 +28,21 @@ describe('AppComponent', () => {
     }).compileComponents();
   });
 
+  // // Test case: Check if the component is created successfully
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
   });
 
+  // Test case: Check if the component has the correct title
   it(`should have as title 'askexpert'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('askexpert');
   });
 
+  // Test case: Check if the component has the correct title
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();

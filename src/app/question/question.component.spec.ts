@@ -6,6 +6,7 @@ describe('QuestionComponent', () => {
   let component: QuestionComponent;
   let fixture: ComponentFixture<QuestionComponent>;
 
+  // Set up the test environment before each test case
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [QuestionComponent]
@@ -17,6 +18,7 @@ describe('QuestionComponent', () => {
     fixture.detectChanges();
   });
 
+  // Test case: Check if the component is created successfully
   it('should create', () => {
     expect(component).toBeTruthy();
   });

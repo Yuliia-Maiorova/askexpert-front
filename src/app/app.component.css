@@ -1,43 +1,50 @@
+/* Container */
 .container {
-    width: 100%;
-    margin: 0 auto;
-    padding: 0;
-  }
-  
-  header {
-    background-color: #333;
-    color: white;
-    padding: 1rem 2rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  h1 {
-    margin: 0;
-    font-size: 1.5rem;
-  }
-  
-  .logout-button {
-    margin-left: auto;
-    background-color: #ff4b5c;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .logout-button:hover {
-    background-color: #ff6b7c;
-  }
-  
-  .main {
-    padding: 2rem;
-  }
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* Header */
+header {
+  background-color: #333;
+  color: white;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Navigation */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Title */
+h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+/* Logout button */
+.logout-button {
+  margin-left: auto;
+  background-color: #ff4b5c;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* Logout button hover effect */
+.logout-button:hover {
+  background-color: #ff6b7c;
+}
+
+/* Main content */
+.main {
+  padding: 2rem;
+}
   

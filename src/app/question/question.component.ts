@@ -30,17 +30,22 @@ export class QuestionComponent implements OnInit {
 
   constructor(private questionService: QuestionService, private categoryService: CategoryService, private authService: AuthService) { }
 
+  // On page initialization
   ngOnInit(): void {
+    // Get all questions
     this.getQuestions();
+    // Get all categories
     this.getCategories();
     /* Set isExpert based on token */
     const token = this.authService.getToken();
+    // Get and decode token, get expert value
     if (token) {
       const decodedToken: any = jwtDecode(token);
       this.isExpert = decodedToken.is_expert;
     }
   }
 
+  // Voting
   toggleVote(answerId: number) {
     this.isUpvoted = !this.isUpvoted; // Toggle the vote
     if (this.isUpvoted) {
@@ -54,12 +59,15 @@ export class QuestionComponent implements OnInit {
 
   // Method to handle category change
   onCategoryChange(category: any) {
+    // Set category information
     this.selectedCategory = category;
     this.selectedCategoryId = category.id;
     this.selectedCategoryHex = category.hex_code;
   }
 
+  // Method to handle search text change
   filterQuestions() {
+    // Filter questions based on search text
     if (this.searchText.trim() === '') {
       this.filteredQuestions = this.questions; // If search text is empty, show all questions
     } else {
@@ -70,7 +78,9 @@ export class QuestionComponent implements OnInit {
     }
   }
 
+  // Method to get all questions
   getQuestions() {
+    // Get all questions
     this.questionService.getQuestions().subscribe(
       (response) => {
         this.questions = response;
@@ -83,7 +93,9 @@ export class QuestionComponent implements OnInit {
     );
   }
 
+  // Method to get filtered questions
   toggleFilteredQuestions() {
+    // Toggle showUnanswered value if expert else all questions
     if (this.showUnanswered && this.isExpert) {
       this.getUnansweredQuestions();
     } else {
@@ -91,8 +103,10 @@ export class QuestionComponent implements OnInit {
     }
   }
 
+  // Method to get unanswered questions
   async getUnansweredQuestions() {
     try {
+      // Call the API to get unanswered questions
       this.questionService.getFilteredQuestions(this.isExpert).subscribe(
         (unansweredQuestions) => {
           this.filteredQuestions = unansweredQuestions; // Update filteredQuestions with unanswered questions
@@ -106,7 +120,9 @@ export class QuestionComponent implements OnInit {
     }
   }
 
+  // Method to get all categories
   getCategories() {
+    // Get all categories
     this.categoryService.getCategories().subscribe(
       (response) => {
         this.categories = response;
@@ -117,12 +133,14 @@ export class QuestionComponent implements OnInit {
     );
   }
 
+  // Method to post a question
   postQuestion() {
     const userId = this.authService.getUserIdFromToken();
     // Retrieve title and content from the form fields
     const title = this.newQuestion.title;
     const content = this.newQuestion.content;
 
+    // Ensure user is authenticated
     if (!userId) {
       console.error('User not authenticated');
       return;
@@ -134,16 +152,19 @@ export class QuestionComponent implements OnInit {
       return;
     }
 
+    // Ensure a category is selected
     if (this.selectedCategoryId === 0) {
       console.error('Please select a category');
       return;
     }
 
+    // Create question object
     this.newQuestion.title = title;
     this.newQuestion.content = content;
     this.newQuestion.category_id = this.selectedCategoryId;
     this.newQuestion.id = userId;
 
+    // Post the question
     this.questionService.postQuestion(this.newQuestion).subscribe(
       (response) => {
         console.log('Question posted successfully:', response);
@@ -157,8 +178,11 @@ export class QuestionComponent implements OnInit {
     );
   }
 
+  // Get question answers
   toggleAnswers(questionId: number) {
+    // Find the question index
     const questionIndex = this.questions.findIndex(q => q.id === questionId);
+    // Toggle the answers property
     if (questionIndex !== -1) {
       if (!this.questions[questionIndex].showAnswers) {
         /* Fetch answers for the question if not already fetched */
@@ -177,6 +201,7 @@ export class QuestionComponent implements OnInit {
     }
   }
 
+  // Voting
   upvoteAnswer(answerId: number) {
     // Updated method to call the new upvoteAnswer service method
     this.questionService.upvoteAnswer(answerId).subscribe(
@@ -189,6 +214,7 @@ export class QuestionComponent implements OnInit {
     );
   }
 
+  // Voting down
   downvoteAnswer(answerId: number) {
     // Updated method to call the new downvoteAnswer service method
     this.questionService.downvoteAnswer(answerId).subscribe(
@@ -201,7 +227,9 @@ export class QuestionComponent implements OnInit {
     );
   }
   
+  // Rating
   rateAnswer(answerId: number, rating: number) {
+    // Updated method to call the new rateAnswer service method
     this.questionService.rateAnswer(answerId, rating).subscribe(
       (response) => {
         console.log('Rating operation successful:', response);
@@ -212,16 +240,19 @@ export class QuestionComponent implements OnInit {
     );
   }
 
+  // Get category name
   getCategoryName(categoryId: number): string {
     const category = this.categories.find(cat => cat.id === categoryId);
     return category ? category.name : '';
   }
   
+  // Get category color
   getCategoryColor(categoryId: number): string {
     const category = this.categories.find(cat => cat.id === categoryId);
     return category ? category.hex_code : 'black'; // Default color if category not found
   }
 
+  // Filter questions by category
   filterByCategory() {
     if (!this.selectedCategory || this.selectedCategory === '') {
       // If no category selected, show all questions
@@ -232,10 +263,12 @@ export class QuestionComponent implements OnInit {
     }
   }  
 
+  // Method to check if user chose score, show rate button
   showRateButton(answer: any): boolean {
     return answer.rating;
   }
 
+  // Method to approve answer
   toggleApproval(answer: any) {
     const originalState = answer.approve_counter;
 
@@ -245,6 +278,7 @@ export class QuestionComponent implements OnInit {
     // Determine the appropriate action and endpoint
     const action = answer.approve_counter ? this.questionService.approveAnswer(answer.id) : this.questionService.unapproveAnswer(answer.id);
 
+    // Call the appropriate action approve
     action.subscribe(
       (response) => {
         console.log('Answer approval state changed successfully:', response);
@@ -257,7 +291,9 @@ export class QuestionComponent implements OnInit {
     );
   }
 
+  // Method to post answer approval
   approveAnswer(answerId: number) {
+    // Post approval
     this.questionService.approveAnswer(answerId).subscribe(
       (response) => {
         console.log('Answer approved successfully:', response);
@@ -268,7 +304,9 @@ export class QuestionComponent implements OnInit {
     );
   }
 
+  // Method to post answer unapproval
   unapproveAnswer(answerId: number) {
+    // Post unapproval
     this.questionService.unapproveAnswer(answerId).subscribe(
       (response) => {
         console.log('Answer unapproved successfully:', response);
@@ -279,6 +317,7 @@ export class QuestionComponent implements OnInit {
     );
   }
 
+  // Method to post an answer
   postAnswer(postId: number) {
     // Create answer data object
     const answerData = {
@@ -287,6 +326,7 @@ export class QuestionComponent implements OnInit {
       is_expert: this.isExpert,
     };
 
+    // Post answer
     this.questionService.postAnswer(postId, answerData).subscribe(
       (response) => {
         console.log('Answer posted successfully:', response);

@@ -38,6 +38,7 @@
   transition: border-color 0.3s ease;
 }
 
+/* Ask question input focus */
 .ask-question input:focus,
 .ask-question textarea:focus,
 .ask-question select:focus {
@@ -58,6 +59,7 @@
   transition: background-color 0.3s ease;
 }
 
+/* Ask question button hover */
 .ask-question button:hover {
   background-color: #004080; /* Darker shade of blue on hover */
 }
@@ -133,6 +135,7 @@
   transition: background-color 0.3s ease;
 }
 
+/* Question container */
 .question-container {
   position: relative;
   padding: 20px;
@@ -140,10 +143,12 @@
   margin-bottom: 10px;
 }
 
+/* Content padding */
 .answer-content {
   padding-right: 60px; /* Ensure there's space for the button */
 }
 
+/* Answer container */
 .answer-container {
   position: relative;
   padding: 20px;
@@ -151,6 +156,7 @@
   margin-bottom: 10px;
 }
 
+/* Approval button */
 .toggle-approval-button {
   position: absolute;
   top: 10px;
@@ -164,6 +170,7 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* When approved */
 .toggle-approval-button.approved {
   background-color: #28a745;
   color: #fff;
@@ -175,14 +182,17 @@
   align-items: center;
 }
 
+/* Rating name */
 .rating-label {
   margin-right: 10px;
 }
 
+/* Rating select */
 .rating-select {
   margin-right: 20px;
 }
 
+/* Rating button */
 .rate-button {
   padding: 8px 16px;
   border: none;
@@ -191,26 +201,31 @@
   cursor: pointer;
 }
 
+/* Button rating hover */
 .rate-button:hover {
   background-color: #0056b3;
 }
 
+/* Button rating disabled */
 .rate-button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
 
+/* Checkbox */
 .checkbox-container {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
 }
 
+/* Checkbox title */
 .checkbox-label {
   margin-left: 10px;
   font-size: 16px;
 }
 
+/* Checkbox input */
 .checkbox-input {
   margin-right: 5px;
   appearance: none;
@@ -222,10 +237,12 @@
   cursor: pointer;
 }
 
+/* Checkbox input checked */
 .checkbox-input:checked {
   background-color: #4CAF50;
 }
 
+/* Checkbox input checked after */
 .checkbox-input:checked::after {
   content: '\2714';
   font-size: 16px;
@@ -235,14 +252,14 @@
   line-height: 18px;
 }
 
-/* Assuming you have a CSS file for your component, e.g., questions.component.css */
-
+/* Search bar */
 .search-bar {
   margin-bottom: 20px;
   display: flex;
   align-self: center;
 }
 
+/* Search text */
 .search-bar input[type="text"] {
   width: 100%;
   padding: 10px;
@@ -252,11 +269,13 @@
   transition: border-color 0.3s ease;
 }
 
+/* Search focus */
 .search-bar input[type="text"]:focus {
   border-color: #007bff; /* Change border color on focus */
   outline: none;
 }
 
+/* Category style */
 .category {
   position: absolute;
   top: 0;

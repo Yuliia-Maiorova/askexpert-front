@@ -10,12 +10,14 @@ import { QuestionComponent } from './question/question.component';
 
 @NgModule({
   declarations: [
+    // Declare modules
     AppComponent,
     RegisterComponent,
     LoginComponent,
     QuestionComponent,
   ],
   imports: [
+    // Declare imports
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,

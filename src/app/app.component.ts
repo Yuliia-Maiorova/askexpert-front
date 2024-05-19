@@ -9,8 +9,10 @@ import { environment } from '../environments/environment';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
+  // App title
   title = 'askexpert';
 
+  // Setup init
   ngOnInit() {
     if (isDevMode()) {
       console.log(environment)
@@ -22,6 +24,7 @@ export class AppComponent implements OnInit{
 
   constructor(private router: Router, private authService: AuthService) {}
 
+  // Display navbar
   showNavbar(): boolean {
     // Get the current route
     const currentRoute = this.router.url;
@@ -30,8 +33,11 @@ export class AppComponent implements OnInit{
     return !['/login', '/register'].includes(currentRoute);
   }
 
+  // Logout
   logout(): void {
+    // Logout call
     this.authService.logout();
+    // Redirect to login page
     this.router.navigate(['/login']);
   }
 }

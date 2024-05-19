@@ -8,11 +8,15 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 
+// Question service
 export class QuestionService {
+  // Base URL
   private baseUrl = environment.env_url;
 
+  // Constructor
   constructor(private http: HttpClient, private authService: AuthService) {}
 
+  // Method to get questions
   getQuestions(): Observable<any> {
     /* Get the token from local storage */
     const token = this.authService.getToken();
@@ -30,6 +34,7 @@ export class QuestionService {
     return this.http.get(`${this.baseUrl}/question`, { headers });
   }
 
+  // Method to get question by ID
   postQuestion(newQuestion: any): Observable<any> {
     /* Get the token from local storage */
     const token = this.authService.getToken();
@@ -41,10 +46,12 @@ export class QuestionService {
       throw new Error('Token not set. Please log in to get the token.');
     }
 
+    // Is user authenticated get the id
     if (userId !== null) {
       newQuestion.id = userId;
     }
 
+    /* Include the token in the request headers */
     if (newQuestion.category_id && typeof newQuestion.category_id === 'object') {
       newQuestion.category_id = newQuestion.category_id.id;
     }
@@ -59,6 +66,7 @@ export class QuestionService {
     return this.http.put<any>(`${this.baseUrl}/question/`, newQuestion, { headers });
   }
 
+  // Method to get question by ID
   getAnswersForQuestion(questionId: number): Observable<any> {
     /* Get the token from local storage */
     const token = this.authService.getToken();
@@ -83,6 +91,7 @@ export class QuestionService {
     );
   }  
 
+  // Post answer to a question
   postAnswer(postId: number, answerData: any): Observable<any> {
     /* Get the token from local storage */
     const token = this.authService.getToken();
@@ -102,6 +111,7 @@ export class QuestionService {
     return this.http.put<any>(`${this.baseUrl}/answer/${postId}`, answerData, { headers });
   }
 
+  // Upvote an answer
   upvoteAnswer(answerId: number): Observable<any> {
     /* Get the token from local storage */
     const token = this.authService.getToken();
@@ -117,12 +127,11 @@ export class QuestionService {
       'Authorization': `Bearer ${token}`
     });
 
-    console.log(token)
-    console.log(headers)
     /* Make the POST request to upvote the answer */
     return this.http.post(`${this.baseUrl}/answer/upvote/${answerId}`, {}, { headers });
   }
 
+  // Downvote an answer
   downvoteAnswer(answerId: number): Observable<any> {
     /* Get the token from local storage */
     const token = this.authService.getToken();
@@ -142,6 +151,7 @@ export class QuestionService {
     return this.http.post(`${this.baseUrl}/answer/downvote/${answerId}`, {},{ headers });
   }
 
+  // Rate an answer
   rateAnswer(answerId: number, rating: number): Observable<any> {
     /* Get the token from local storage */
     const token = this.authService.getToken();
@@ -160,6 +170,7 @@ export class QuestionService {
     return this.http.post(`${this.baseUrl}/answer/rate/${answerId}`, { rating }, { headers });
   }
 
+  // Approve an answer
   approveAnswer(answerId: number): Observable<any> {
     /* Get the token from local storage */
     const token = this.authService.getToken();
@@ -179,6 +190,7 @@ export class QuestionService {
     return this.http.post(`${this.baseUrl}/answer/approve/${answerId}`,{}, { headers });
   }
 
+  // Unapprove an answer
   unapproveAnswer(answerId: number): Observable<any> {
     /* Get the token from local storage */
     const token = this.authService.getToken();
@@ -198,14 +210,17 @@ export class QuestionService {
     return this.http.post(`${this.baseUrl}/answer/unapprove/${answerId}`, {}, { headers });
   }
 
+  // Get existing categories
   getCategories(): Observable<any> {
     return this.http.get(`${this.baseUrl}/category`);
   }
 
+  // Create a new category
   createCategory(categoryData: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/category`, categoryData);
   }
 
+  // Get filtered questions
   getFilteredQuestions(isExpert: boolean): Observable<any[]> {
     /* Get the token from local storage */
     const token = this.authService.getToken();
