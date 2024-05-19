@@ -4,6 +4,8 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 import { enableProdMode } from '@angular/core';
 
+console.log(environment)
+
 if (environment.production) {
   enableProdMode();
 }

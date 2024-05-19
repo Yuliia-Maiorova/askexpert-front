@@ -13,6 +13,7 @@ export class AppComponent implements OnInit{
 
   ngOnInit() {
     if (isDevMode()) {
+      console.log(environment)
       console.log('Development!');
     } else {
       console.log('Production!');
