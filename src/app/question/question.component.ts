@@ -27,6 +27,8 @@ export class QuestionComponent implements OnInit {
   newAnswers: { [key: number]: string } = {}; // Object to store new answers for each question
   isUpvoted: boolean = false; // Define isUpvoted variable
   searchText: string = ''; // Search text
+  newComments: { [key: number]: string } = {}; // Object to store new comments for each answer
+  comments: any[] = []; // Array to store comments for an answer
 
   constructor(private questionService: QuestionService, private categoryService: CategoryService, private authService: AuthService) { }
 
@@ -229,16 +231,24 @@ export class QuestionComponent implements OnInit {
   
   // Rating
   rateAnswer(answerId: number, rating: number) {
-    // Updated method to call the new rateAnswer service method
+    // Call the new rateAnswer service method
     this.questionService.rateAnswer(answerId, rating).subscribe(
-      (response) => {
+      (response: any) => {
         console.log('Rating operation successful:', response);
+        // Find the answer in the questions list and update its average rating
+        this.questions.forEach(question => {
+          question.answers.forEach((answer: any) => {
+            if (answer.id === answerId) {
+              answer.rate = response.newAverageRating; // Update with new average rating from the response
+            }
+          });
+        });
       },
       (error) => {
         console.error('Error during rating operation:', error);
       }
     );
-  }
+  }  
 
   // Get category name
   getCategoryName(categoryId: number): string {
@@ -340,4 +350,32 @@ export class QuestionComponent implements OnInit {
       }
     );
   }
+
+  postComment(answerId: number, content: string) {
+    this.questionService.postComment(answerId, content).subscribe(
+      (response) => {
+        console.log('Comment posted successfully:', response);
+        // Clear the new comment field after successful submission
+        this.newComments[answerId] = '';
+        // Refresh the comments for the answer
+        this.getComments(answerId); // Call getComments with the answerId
+      },
+      (error) => {
+        console.error('Error posting comment:', error);
+      }
+    );
+  }  
+
+  getComments(answerId: number) {
+    this.questionService.getCommentsForAnswer(answerId).subscribe(
+      (comments) => {
+        console.log('Comments for answer:', comments);
+        // Push the fetched comments to the comments array
+        this.comments = comments;
+      },
+      (error) => {
+        console.error('Error fetching comments:', error);
+      }
+    );
+  }  
 }

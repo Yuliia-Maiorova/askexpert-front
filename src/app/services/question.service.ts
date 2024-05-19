@@ -242,5 +242,45 @@ export class QuestionService {
     // Call the API route to get filtered questions based on the expert status
     return this.http.get<any[]>(`${this.baseUrl}/question/unanswered`, { headers });
   }
+
+  // Method to post a new comment for an answer
+  postComment(answerId: number, content: string): Observable<any> {
+    const token = this.authService.getToken();
+    if (!token) {
+      throw new Error('Token not set. Please log in to get the token.');
+    }
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.put<any>(`${this.baseUrl}/comment/${answerId}`, { content }, { headers }).pipe(
+      catchError(error => {
+        console.error('Error posting comment:', error);
+        return throwError('Something went wrong while posting comment.');
+      })
+    );
+  }
+
+  // Method to fetch comments for an answer
+  getCommentsForAnswer(answerId: number): Observable<any[]> {
+    const token = this.authService.getToken();
+    if (!token) {
+      throw new Error('Token not set. Please log in to get the token.');
+    }
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.get<any[]>(`${this.baseUrl}/comment/${answerId}`, { headers }).pipe(
+      catchError(error => {
+        console.error('Error fetching comments:', error);
+        return throwError('Something went wrong while fetching comments.');
+      })
+    );
+  }
 }
 

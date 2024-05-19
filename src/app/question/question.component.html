@@ -53,15 +53,25 @@
                   <option *ngFor="let rate of [1, 2, 3, 4, 5]" [ngValue]="rate">{{ rate }}</option>
                 </select>
                 <button *ngIf="showRateButton(answer)" class="rate-button" (click)="rateAnswer(answer.id, answer.rating)">Rate</button>
+                <p>Average rating: {{ answer.rating || 0 }}</p>
+              </div>
+              <form class="comment-form" (submit)="postComment(answer.owner_id, newComments[answer.id])">
+                <textarea [(ngModel)]="newComments[answer.id]" placeholder="Add your comment" name="comment" required></textarea>
+                <button type="submit">Post Comment</button>
+              </form>
+              <div class="comments">
+                <div *ngFor="let comment of comments" class="comment">
+                  <p>{{ comment.content }}</p>
+                </div>
               </div>
             </div>
-            <form *ngIf="isExpert" class="answer-form" (submit)="postAnswer(question.id)">
-              <textarea [(ngModel)]="newAnswers[question.id]" placeholder="Your answer" name="answer" required></textarea>
-              <button type="submit">Post Answer</button>
-            </form>
+          </div>
+          <form *ngIf="isExpert" class="answer-form" (submit)="postAnswer(question.id)">
+            <textarea [(ngModel)]="newAnswers[question.id]" placeholder="Your answer" name="answer" required></textarea>
+            <button type="submit">Post Answer</button>
+          </form>
           </div>
         </div>
-      </div>
       <div *ngIf="filteredQuestions.length === 0 && selectedCategory" class="no-questions-message">
         No questions available for the selected category.
       </div>
